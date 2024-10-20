@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:20  # Using a Node.js 20 base image
+    container_name: nestjs-app
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app  # Bind mount the current directory
+    ports:
+      - "3000:3000"     # Expose the NestJS app port
+    depends_on:
+      - postgres        # Ensure PostgreSQL starts first
+    environment:
+      DATABASE_HOST: 66.42.43.15
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: Abc@12345
+      DATABASE_NAME: your_database_name  # Replace with your actual DB name
+    command: npm run start:dev  # Start the NestJS app in dev mode
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
+    ports:
+      - "5432:5432"     # Expose the PostgreSQL port
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Abc@12345
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
