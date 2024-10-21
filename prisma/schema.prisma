@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model accounts {
+  accountid              String        @id @db.Uuid
+  profilename            String?       @db.VarChar(256)
+  firstname              String?       @db.VarChar(256)
+  lastname               String?       @db.VarChar(256)
+  dateofbirth            DateTime?     @db.Timestamp(6)
+  gender                 Int?
+  refreshtoken           String?       @db.VarChar(256)
+  refreshtokenexpirytime String?       @db.VarChar(256)
+  avatar                 String?       @db.VarChar(500)
+  status                 Int?
+  location               String?
+  activeddate            DateTime?     @db.Timestamp(6)
+  username               String?       @db.VarChar(256)
+  email                  String?       @db.VarChar(256)
+  emailconfirmed         Boolean?
+  passwordhash           String?
+  phonenumber            String?
+  phonenumberconfirmed   Boolean?
+  memberships            memberships[]
+}
+
+model memberships {
+  memberid       String    @id @db.Uuid
+  fullname       String?   @db.VarChar(256)
+  email          String?   @db.VarChar(256)
+  phonenumber    String?   @db.VarChar(16)
+  profilepicture String?   @db.VarChar(500)
+  bio            String?
+  joineddate     DateTime? @db.Timestamp(6)
+  accountid      String    @db.Uuid
+  status         String?   @db.VarChar(50)
+  address        String?   @db.VarChar(256)
+  accounts       accounts  @relation(fields: [accountid], references: [accountid], onDelete: NoAction)
+}
