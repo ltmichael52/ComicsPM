@@ -1,14 +1,14 @@
-import { PrismaService } from "src/prisma/prisma.service";
+import { DatabaseService } from "src/database/database.service";
 import { UserDto } from "./dto/user.dto";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class UserService{
-    constructor(private prisma: PrismaService){}
+    constructor(private database: DatabaseService){}
 
     async getUserInfoById(id: string):Promise<UserDto>{
         console.log(`Fetching user with ID: ${id}`);
-        const user = await this.prisma.accounts.findUnique({
+        const user = await this.database.accounts.findUnique({
             where:{
                 accountid : id,
             },
@@ -40,7 +40,7 @@ export class UserService{
     }
 
     async updateUserInfo(id:string, dto:UserDto): Promise<UserDto>{
-        const updatedUser = await this.prisma.accounts.update({
+        const updatedUser = await this.database.accounts.update({
             where: {accountid: id},
             data:{
                 firstname : dto.firstname,
