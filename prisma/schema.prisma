@@ -8,7 +8,7 @@ datasource db {
 }
 
 model accounts {
-  accountid              String        @id @db.Uuid
+  accountid              String        @id @default(uuid()) @db.Uuid
   profilename            String?       @db.VarChar(256)
   firstname              String?       @db.VarChar(256)
   lastname               String?       @db.VarChar(256)
@@ -26,6 +26,7 @@ model accounts {
   passwordhash           String?
   phonenumber            String?
   phonenumberconfirmed   Boolean?
+  IsActive               Boolean?
   memberships            memberships[]
 }
 
@@ -42,3 +43,4 @@ model memberships {
   address        String?   @db.VarChar(256)
   accounts       accounts  @relation(fields: [accountid], references: [accountid], onDelete: NoAction)
 }
+
