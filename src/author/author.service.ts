@@ -1,14 +1,14 @@
-import { PrismaService } from "src/prisma/prisma.service";
+import { DatabaseService } from "src/database/database.service";
 import { AuthorDto } from "./dto/author.dto";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class AuthorService{
-    constructor(private prisma: PrismaService){}
+    constructor(private database: DatabaseService){}
 
     async getAuthorInfoById(id: string):Promise<AuthorDto>{
         console.log(`Fetching user with ID: ${id}`);
-        const user = await this.prisma.authors.findUnique({
+        const user = await this.database.authors.findUnique({
             where:{
                 authorid : id,
             },
@@ -28,7 +28,7 @@ export class AuthorService{
     }
 
     async updateAuthorInfo(id:string, dto:AuthorDto): Promise<AuthorDto>{
-        const updatedUser = await this.prisma.authors.update({
+        const updatedUser = await this.database.authors.update({
             where: {authorid: id},
             data:{
                 fullname:dto.fullname,

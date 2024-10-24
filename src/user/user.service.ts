@@ -7,7 +7,6 @@ export class UserService{
     constructor(private database: DatabaseService){}
 
     async getUserInfoById(id: string):Promise<UserDto>{
-        console.log(`Fetching user with ID: ${id}`);
         const user = await this.database.accounts.findUnique({
             where:{
                 accountid : id,
