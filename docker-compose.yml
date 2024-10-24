@@ -1,13 +1,10 @@
 version: '3.8'
 services:
-  dev-db:
-    image: postgres:latest
-    ports:
-      - 5433:5432
+  # Other services like your app, etc.
+  app:
+    build: .
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Abc@12345
-      POSTGRES_DB: Comics
+      DATABASE_URL: "postgresql://postgres:Abc%4012345@66.42.43.15:5433/Comics?schema=account"
     networks:
       - hostnet
 
