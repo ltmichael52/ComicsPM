@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["account", "content"]
 }
 
 model accounts {
@@ -27,6 +29,9 @@ model accounts {
   phonenumber            String?
   phonenumberconfirmed   Boolean?
   memberships            memberships[]
+  authors                authors[]
+
+  @@schema("account")
 }
 
 model memberships {
@@ -41,4 +46,31 @@ model memberships {
   status         String?   @db.VarChar(50)
   address        String?   @db.VarChar(256)
   accounts       accounts  @relation(fields: [accountid], references: [accountid], onDelete: NoAction)
+
+  @@schema("account")
+}
+
+model authors {
+  authorid    String    @id @db.Uuid
+  fullname    String?   @db.VarChar(256)
+  email       String?   @unique @db.VarChar(256)
+  profileid   String?
+  createddate DateTime? @db.Timestamp(6)
+  accountid   String    @db.Uuid
+  accounts    accounts  @relation(fields: [accountid], references: [accountid], onDelete: NoAction)
+  posts       posts[]
+
+  @@schema("content")
+}
+
+model posts {
+  postid        String    @id @db.Uuid
+  title         String    @db.VarChar(256)
+  content       String?
+  posterid      String    @db.Uuid
+  publisheddate DateTime? @db.Timestamp(6)
+  status        String?   @db.VarChar(256)
+  authors       authors   @relation(fields: [posterid], references: [authorid], onDelete: NoAction)
+
+  @@schema("content")
 }

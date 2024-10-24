@@ -15,6 +15,21 @@ export class UserService{
             select:{
                 firstname:true,
                 lastname:true,
+                dateofbirth: true,
+                gender: true,
+                refreshtoken:true,
+                refreshtokenexpirytime: true,
+                avatar:true,
+                status:true,
+                location:true,
+                activeddate:true,
+                username:true,
+                email:true,
+                emailconfirmed:true,
+                passwordhash:true,
+                phonenumber:true,
+                phonenumberconfirmed:true,
+                profilename:true
             }
         });
         
@@ -29,7 +44,22 @@ export class UserService{
             where: {accountid: id},
             data:{
                 firstname : dto.firstname,
-                lastname : dto.lastname
+                lastname : dto.lastname,
+                dateofbirth: dto.dateofbirth,
+                gender: dto.gender,
+                refreshtoken: dto.refreshtoken,
+                refreshtokenexpirytime: dto.refreshtokenexpirytime,
+                avatar: dto.avatar,
+                status: dto.status,
+                location: dto.location,
+                activeddate: dto.activeddate,
+                username: dto.username,
+                email: dto.email,
+                emailconfirmed: dto.emailconfirmed,
+                passwordhash: dto.passwordhash,
+                phonenumber: dto.phonenumber,
+                phonenumberconfirmed: dto.phonenumberconfirmed,
+                profilename: dto.profilename
             }
         });
         return updatedUser;
