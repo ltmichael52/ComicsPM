@@ -3,13 +3,6 @@ import { AppService } from './app.service';
 
 import { DatabaseModule } from './database/database.module';
 import { AccountsModule } from './accounts/accounts.module';
-<<<<<<< HEAD
-import { UserModule } from './user/user.module';
-import { AuthorModule } from './author/author.module';
-
-@Module({
-  imports: [DatabaseModule, AccountsModule,UserModule,AuthorModule],
-=======
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -42,8 +35,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService]
     })
    ],
-  controllers: [AppController],
->>>>>>> feature/authen
   providers: [AppService],
 
 })
