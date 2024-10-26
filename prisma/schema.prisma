@@ -10,7 +10,7 @@ datasource db {
 }
 
 model accounts {
-  accountid              String        @id @db.Uuid
+  accountid              String        @id @default(uuid()) @db.Uuid
   profilename            String?       @db.VarChar(256)
   firstname              String?       @db.VarChar(256)
   lastname               String?       @db.VarChar(256)
@@ -28,6 +28,7 @@ model accounts {
   passwordhash           String?
   phonenumber            String?
   phonenumberconfirmed   Boolean?
+  IsActive               Boolean?
   memberships            memberships[]
   authors                authors[]
 
@@ -74,3 +75,4 @@ model posts {
 
   @@schema("content")
 }
+
