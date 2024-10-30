@@ -5,10 +5,21 @@ import { accountCreate } from './dtos/accountCreate.dto';
 import { accountConfirm } from './dtos/accountConfirm.dto';
 import { accountLogin } from './dtos/accountLogin.dto';
 import { changePassword } from './dtos/changePassword.dto';
+import { accountForgot } from './dtos/accountForgot.dto';
 
 @Controller('accounts')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() accountForgot: accountForgot) {
+    if (!accountForgot.email) {
+      throw new InternalServerErrorException('Email cannot be undefined');
+    }
+
+    return this.accountsService.forgotPassword(accountForgot);
+  }
+
 
   @Post()
   create(@Body() createAccountDto: accountCreate) {

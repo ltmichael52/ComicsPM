@@ -8,6 +8,7 @@ import { comparePasswordHelper, hashPassword } from 'src/helpers/until';
 import { accountLogin } from './dtos/accountLogin.dto';
 import { JwtService } from '@nestjs/jwt';
 import { changePassword } from './dtos/changePassword.dto';
+import { accountForgot } from './dtos/accountForgot.dto';
 
 
 @Injectable()
@@ -156,6 +157,33 @@ export class AccountsService {
       return { accountId: changePasswordDto.accountid, message: 'Change password success' };
     } catch (error) {
       throw new InternalServerErrorException(`Failed to change password: ${error.message}`);
+    }
+  }
+  async forgotPassword(accountForgot: accountForgot): Promise<{ success: boolean; message: string }> {
+    try {
+      const account = await this.databaseService.accounts.findFirst({
+        where: {
+          email: accountForgot.email,
+        },
+      });
+
+      if (!account) {
+        throw new UnauthorizedException('Account not found');
+      }
+
+      this.mailerService.sendMail({
+        to: account.email,
+        subject: 'Activate your account',
+        template: 'register',
+        context: {
+          name: account.username,
+          activationCode: account.accountid.toString()
+        }
+      });
+
+      return { success: true, message: 'Check Your email' };
+    } catch (error) {
+      throw new InternalServerErrorException(`Failed to send password reset email: ${error.message}`);
     }
   }
 
