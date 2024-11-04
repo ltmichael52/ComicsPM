@@ -6,9 +6,10 @@ import { AccountsModule } from './accounts/accounts.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { StoriesModule } from './stories/stories.module';
 
 @Module({
-  imports: [DatabaseModule, AccountsModule,ConfigModule.forRoot(),
+  imports: [DatabaseModule, AccountsModule, StoriesModule,ConfigModule.forRoot(),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService : ConfigService) => ({
