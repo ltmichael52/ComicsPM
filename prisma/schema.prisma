@@ -6,7 +6,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["account", "content"]
+  schemas  = ["account", "author", "comic", "content", "story"]
 }
 
 model accounts {
@@ -28,7 +28,6 @@ model accounts {
   passwordhash           String?
   phonenumber            String?
   phonenumberconfirmed   Boolean?
-  IsActive               Boolean?
   memberships            memberships[]
   authors                authors[]
 
@@ -76,3 +75,120 @@ model posts {
   @@schema("content")
 }
 
+model author_authors {
+  authorid     String         @id @db.Uuid
+  authorname   String?        @db.VarChar(128)
+  bio          String?
+  comicauthors comicauthors[]
+  storyauthors storyauthors[]
+
+  @@map("authors")
+  @@schema("author")
+}
+
+model comicauthors {
+  id        String         @id @db.Uuid
+  authorid  String         @db.Uuid
+  comicname String
+  authors   author_authors @relation(fields: [authorid], references: [authorid], onDelete: NoAction)
+  comics    comics         @relation(fields: [comicname], references: [comicname], onDelete: NoAction)
+
+  @@schema("comic")
+}
+
+model comicchapters {
+  id          String @id @db.Uuid
+  chapter     Int
+  chaptername String
+  comicname   String
+  comics      comics @relation(fields: [comicname], references: [comicname], onDelete: NoAction)
+
+  @@schema("comic")
+}
+
+model comics {
+  comicname          String               @id
+  content            String
+  introimage         String?              @db.VarChar(500)
+  type               String?              @db.VarChar(256)
+  posteddate         DateTime?            @db.Timestamp(6)
+  catalog            String               @db.Uuid
+  description        String?
+  chapters           Int?
+  comicauthors       comicauthors[]
+  comicchapters      comicchapters[]
+  comictyperelations comictyperelations[]
+
+  @@schema("comic")
+}
+
+model comictyperelations {
+  id         String     @id @db.Uuid
+  typeid     String     @db.Uuid
+  comicname  String
+  comics     comics     @relation(fields: [comicname], references: [comicname], onDelete: NoAction)
+  comictypes comictypes @relation(fields: [typeid], references: [typeid], onDelete: NoAction)
+
+  @@schema("comic")
+}
+
+model comictypes {
+  typeid             String               @id @db.Uuid
+  nametype           String
+  comictyperelations comictyperelations[]
+
+  @@schema("comic")
+}
+
+model stories {
+  storyname          String               @id
+  content            String
+  storyimage         String?              @db.VarChar(500)
+  type               String?              @db.VarChar(256)
+  posteddate         DateTime?            @db.Timestamp(6)
+  catalog            String               @db.Uuid
+  description        String?
+  storyauthors       storyauthors[]
+  storychapters      storychapters[]
+  storytyperelations storytyperelations[]
+
+  @@schema("story")
+}
+
+model storyauthors {
+  id        String         @id @db.Uuid
+  authorid  String         @db.Uuid
+  storyname String
+  authors   author_authors @relation(fields: [authorid], references: [authorid], onDelete: NoAction)
+  stories   stories        @relation(fields: [storyname], references: [storyname], onDelete: NoAction)
+
+  @@schema("story")
+}
+
+model storychapters {
+  id          String  @id @db.Uuid
+  chapter     Int
+  chaptername String
+  storyname   String
+  stories     stories @relation(fields: [storyname], references: [storyname], onDelete: NoAction)
+
+  @@schema("story")
+}
+
+model storytyperelations {
+  id         String     @id @db.Uuid
+  typeid     String     @db.Uuid
+  storyname  String
+  stories    stories    @relation(fields: [storyname], references: [storyname], onDelete: NoAction)
+  storytypes storytypes @relation(fields: [typeid], references: [typeid], onDelete: NoAction)
+
+  @@schema("story")
+}
+
+model storytypes {
+  typeid             String               @id @db.Uuid
+  nametype           String
+  storytyperelations storytyperelations[]
+
+  @@schema("story")
+}
