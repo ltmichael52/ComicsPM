@@ -7,6 +7,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { StoriesModule } from './stories/stories.module';
+import { ComicsModule } from './comics/comics.module';
 
 @Module({
   imports: [DatabaseModule, AccountsModule, StoriesModule,ConfigModule.forRoot(),
@@ -34,7 +35,8 @@ import { StoriesModule } from './stories/stories.module';
         },
       }),
       inject: [ConfigService]
-    })
+    }),
+    ComicsModule
    ],
   providers: [AppService],
 
