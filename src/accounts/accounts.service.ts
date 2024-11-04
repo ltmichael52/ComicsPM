@@ -26,7 +26,7 @@ export class AccountsService {
         data: {
           username: createAccountDto.userName,
           email: createAccountDto.email,
-          IsActive: false, // Initially set to false
+          status: 0, // Initially set to false
         },
       });
       this.mailerService.sendMail({
@@ -61,7 +61,7 @@ export class AccountsService {
         throw new ConflictException('Activation code is invalid');
       }
 
-      if (account.IsActive) {
+      if (account.status == 1) {
         throw new ConflictException('Account is already active');
       }
 
@@ -74,7 +74,7 @@ export class AccountsService {
           accountid: accountConfirm.code,
         },
         data: {
-          IsActive: true,
+          status: 1,
           passwordhash: await hashPassword(accountConfirm.password), // Assuming hashPassword is imported and available
         },
       });
@@ -98,7 +98,7 @@ export class AccountsService {
         throw new UnauthorizedException('Invalid credentials');
       }
 
-      if (!account.IsActive) {
+      if (account.status == 0) {
         throw new UnauthorizedException('Account is not active');
       }
 
@@ -132,7 +132,7 @@ export class AccountsService {
         throw new UnauthorizedException('Account not found');
       }
 
-      if (!account.IsActive) {
+      if (account.status == 0) {
         throw new UnauthorizedException('Account is not active');
       }
 
