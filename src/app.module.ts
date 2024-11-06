@@ -6,11 +6,13 @@ import { AccountsModule } from './accounts/accounts.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserModule } from './user/user.module';
+import { AuthorModule } from './author/author.module';
+import { ComicDetailModule } from './ComicDetail/comicDetail.module';
 import { StoriesModule } from './stories/stories.module';
 import { ComicsModule } from './comics/comics.module';
-
 @Module({
-  imports: [DatabaseModule, AccountsModule, StoriesModule,ConfigModule.forRoot(),
+  imports: [DatabaseModule,UserModule,AuthorModule,ComicDetailModule,AccountsModule,StoriesModule,ConfigModule.forRoot(),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService : ConfigService) => ({
