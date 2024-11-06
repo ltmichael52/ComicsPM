@@ -10,5 +10,4 @@ export class ComicDetailController{
     async getComicDetailByComicName(@Param('name') name:string):Promise<comicDetailDto>{
         return this.ComicDetailService.getComicDetailByComicName(name);
     }
-
 }

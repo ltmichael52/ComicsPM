@@ -33,8 +33,30 @@ export class ComicDetailService{
                         }
                     }
                 },
+                comictyperelations:{
+                    select:{
+                        comics:{
+                            select:{
+                                comicname:true,
+                                introimage:true,
+                            }
+                        }
+                    }
+                }
             }
         })
+
+
+        const relatedComics = await this.database.comics.findMany({
+            where: {
+                type: comicDetail?.type,
+                comicname: { not: comicDetail?.comicname },  // Exclude the current comic
+            },
+            select: {
+                comicname: true,
+                introimage: true,
+            },
+        });
 
         if (!comicDetail) {
             return null;  // Return null if no comic is found
@@ -50,6 +72,10 @@ export class ComicDetailService{
             content: comicDetail.content,
             type: comicDetail.type,
             chapters:comicDetail.comicchapters.map(chapter=>chapter.chaptername),
+            relatedComic:relatedComics.map(comics => ({
+                comicname:comics.comicname,
+                image : comics.introimage
+            }))
         };
     }
 }

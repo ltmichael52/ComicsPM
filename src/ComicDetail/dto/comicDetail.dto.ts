@@ -1,4 +1,16 @@
-import { IsString, IsNotEmpty, IsDateString, IsArray } from 'class-validator';
+import { IsString, IsNotEmpty, IsDateString, IsArray , ValidateNested} from 'class-validator';
+import { Type } from 'class-transformer';
+
+class RelatedComicDto{
+    @IsString()
+    @IsNotEmpty()
+    comicname: string;
+
+    @IsString()
+    @IsNotEmpty()
+    image: string;
+}
+
 
 export class comicDetailDto {
     @IsString()
@@ -31,4 +43,9 @@ export class comicDetailDto {
     @IsArray()
     @IsString({ each: true })
     chapters: string[];
+
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => RelatedComicDto)
+    relatedComic: RelatedComicDto[];
 }
