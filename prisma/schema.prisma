@@ -118,7 +118,6 @@ model comics {
   comicauthors       comicauthors[]
   comicchapters      comicchapters[]
   comictyperelations comictyperelations[]
-  
   @@schema("comic")
 }
 
